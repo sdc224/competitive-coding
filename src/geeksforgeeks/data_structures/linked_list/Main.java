@@ -48,6 +48,6 @@ public class Main {
         linkedList2.insertEnd(17);
 
         LinkedList mergedList = mergeAndReverse(linkedList1, linkedList2);
-        mergedList.printList();
+        System.out.println(mergedList);
     }
 }

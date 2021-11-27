@@ -40,12 +40,19 @@ public class LinkedList {
         }
     }
 
-    public void printList() {
+    private String printList() {
+        StringBuilder builder = new StringBuilder();
         Node curr = head;
         while (curr != null) {
-            System.out.print(curr.data + " ");
+            builder.append(curr.data + " ");
             curr = curr.next;
         }
-        System.out.println();
+
+        return builder.toString();
+    }
+
+    @Override
+    public String toString() {
+        return printList();
     }
 }
