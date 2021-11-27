@@ -1,5 +1,7 @@
 package geeksforgeeks.data_structures.binary_search_tree;
 
+import java.util.Stack;
+
 public class BinarySearchTree {
     Node root;
 
@@ -36,19 +38,23 @@ public class BinarySearchTree {
 
     }
 
-    private void deleteHelper(Node rootRef, int data) {
-        if (rootRef == null)
-            return;
+    private Node deleteHelper(Node rootRef, int data) {
+        if (rootRef == null) {
+            System.out.println("Node with given data is not found");
+            return null;
+        }
 
         if (rootRef.data == data) {
             rootRef = null;
-            return;
+            return rootRef;
         }
 
         if (data < rootRef.data)
-            deleteHelper(rootRef.left, data);
+            rootRef.left = deleteHelper(rootRef.left, data);
+        else
+            rootRef.right = deleteHelper(rootRef.right, data);
 
-        deleteHelper(rootRef.right, data);
+        return rootRef;
     }
 
     public void delete(int data) {
@@ -56,22 +62,97 @@ public class BinarySearchTree {
     }
 
     private void inOrderHelper(Node rootRef, StringBuilder builder) {
-        if (rootRef != null) {
-            inOrderHelper(rootRef.left, builder);
-            builder.append(rootRef.data + " ");
-            inOrderHelper(rootRef.right, builder);
+        Node curr = rootRef;
+        Stack<Node> stack = new Stack<>();
+
+        while (curr != null || !stack.isEmpty()) {
+            if (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            } else {
+                Node temp = stack.pop();
+                builder.append(temp.data + " ");
+                curr = temp.right;
+            }
         }
     }
 
-    private String inOrder() {
+    private void inOrderRecursiveHelper(Node rootRef, StringBuilder builder) {
+        if (rootRef != null) {
+            inOrderRecursiveHelper(rootRef.left, builder);
+            builder.append(rootRef.data + " ");
+            inOrderRecursiveHelper(rootRef.right, builder);
+        }
+    }
+
+    private void preOrderHelper(Node rootRef, StringBuilder builder) {
+        Stack<Node> stack = new Stack<>();
+        Node curr = rootRef;
+
+        while (curr != null || !stack.isEmpty()) {
+            if (curr != null) {
+                builder.append(curr.data + " ");
+                stack.push(curr);
+                curr = curr.left;
+            } else {
+                curr = stack.pop().right;
+            }
+        }
+    }
+
+    private void preOrderRecursiveHelper(Node rootRef, StringBuilder builder) {
+        if (rootRef != null) {
+            builder.append(rootRef.data + " ");
+            preOrderRecursiveHelper(rootRef.left, builder);
+            preOrderRecursiveHelper(rootRef.right, builder);
+        }
+    }
+
+    private void postOrderRecursiveHelper(Node rootRef, StringBuilder builder) {
+        if (rootRef != null) {
+            postOrderRecursiveHelper(rootRef.left, builder);
+            postOrderRecursiveHelper(rootRef.right, builder);
+            builder.append(rootRef.data + " ");
+        }
+    }
+
+    private String traversal(String type) {
         StringBuilder builder = new StringBuilder();
-        inOrderHelper(this.root, builder);
+
+        switch (type) {
+            case "IN_ORDER":
+                this.inOrderHelper(this.root, builder);
+                break;
+
+            case "IN_ORDER_REC":
+                this.inOrderRecursiveHelper(this.root, builder);
+                break;
+
+            case "PRE_ORDER":
+                this.preOrderHelper(this.root, builder);
+                break;
+
+            case "PRE_ORDER_REC":
+                this.preOrderRecursiveHelper(this.root, builder);
+                break;
+
+            case "POST_ORDER":
+            case "POST_ORDER_REC":
+                this.postOrderRecursiveHelper(this.root, builder);
+
+            default:
+                break;
+        }
 
         return builder.toString();
     }
 
     @Override
     public String toString() {
-        return this.inOrder();
+        return this.traversal("IN_ORDER");
+    }
+
+    public String toString(String type) {
+        return this.traversal(type);
     }
 }

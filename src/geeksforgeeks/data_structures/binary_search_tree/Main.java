@@ -1,7 +1,7 @@
 package geeksforgeeks.data_structures.binary_search_tree;
 
 public class Main {
-    
+
     public static void main(String[] args) {
         BinarySearchTree binarySearchTree = new BinarySearchTree(10);
         binarySearchTree.insert(5);
@@ -13,5 +13,6 @@ public class Main {
         binarySearchTree.insert(25);
 
         System.out.println(binarySearchTree);
+        System.out.println(binarySearchTree.toString("POST_ORDER"));
     }
 }
