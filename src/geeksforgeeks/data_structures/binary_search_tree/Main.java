@@ -13,6 +13,8 @@ public class Main {
         binarySearchTree.insert(25);
 
         System.out.println(binarySearchTree);
-        System.out.println(binarySearchTree.toString("POST_ORDER"));
+
+        binarySearchTree.delete(10);
+        System.out.println(binarySearchTree);
     }
 }

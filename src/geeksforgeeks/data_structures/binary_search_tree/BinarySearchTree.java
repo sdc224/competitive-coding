@@ -39,20 +39,22 @@ public class BinarySearchTree {
     }
 
     private Node deleteHelper(Node rootRef, int data) {
-        if (rootRef == null) {
-            System.out.println("Node with given data is not found");
-            return null;
-        }
-
-        if (rootRef.data == data) {
-            rootRef = null;
+        if (rootRef == null)
             return rootRef;
-        }
 
         if (data < rootRef.data)
             rootRef.left = deleteHelper(rootRef.left, data);
-        else
+        else if (data > rootRef.data)
             rootRef.right = deleteHelper(rootRef.right, data);
+        else {
+            if (rootRef.left == null)
+                return rootRef.right;
+            else if (rootRef.right == null)
+                return rootRef.left;
+
+            rootRef.data = BinarySearchTreeUtils.minValue(rootRef.right);
+            rootRef.right = deleteHelper(rootRef.right, rootRef.data);
+        }
 
         return rootRef;
     }
